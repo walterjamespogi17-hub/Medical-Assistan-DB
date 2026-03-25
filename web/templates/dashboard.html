@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Medical Assistant Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Medical Assistant Robot</h1>
+            <p>Hospital Management System</p>
+            <button id="dark-mode-toggle">Dark Mode</button>
+        </header>
+        <h2>Dashboard</h2>
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h3>{{ patients|length }}</h3>
+                <p>Total Patients</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ prescriptions|length }}</h3>
+                <p>Active Prescriptions</p>
+            </div>
+            <div class="stat-card">
+                <h3>24/7</h3>
+                <p>Monitoring Active</p>
+            </div>
+        </div>
+        <nav>
+            <a href="{{ url_for('register_patient') }}">Register Patient</a>
+            <a href="{{ url_for('schedules') }}">View Schedules</a>
+            <a href="{{ url_for('change_password') }}">Change Password</a>
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('password_requests') }}">Password Requests</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+        <h2>Patients</h2>
+        <ul>
+            {% for patient in patients %}
+                <li>{{ patient.full_name }} - Room {{ patient.room_number }}</li>
+            {% endfor %}
+        </ul>
+        <h2>Active Prescriptions</h2>
+        <ul>
+            {% for prescription in prescriptions %}
+                <li>{{ prescription.medicine_name }} for Patient {{ prescription.patient_id }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
